@@ -1,6 +1,6 @@
 import express from 'express'
 import bcrypt from 'bcryptjs'
-import jwb from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 import db from '../db.js'
 
 const router = express.Router()
@@ -32,7 +32,7 @@ router.post('/register', (req, res) => {
         insertTask.run(currUser.lastInsertRowid, defaultTask)
 
         //tạo token để mỗi user đều có một phân vùng quyền lợi riêng
-        const token = jwb.sign(
+        const token = jwt.sign(
             { id: currUser.lastInsertRowid },
             process.env.JWT_SECRET,
             { expiresIn: '24h' }
@@ -65,7 +65,7 @@ router.post('/login', (req, res) => {
         }
 
         //tạo token login
-        const token = jwb.sign(
+        const token = jwt.sign(
             { id: currUser.id },
             process.env.JWT_SECRET,
             { expiresIn: '24h' }
