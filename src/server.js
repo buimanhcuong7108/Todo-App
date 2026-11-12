@@ -5,34 +5,29 @@ import authRoutes from './routes/authRoutes.js'
 import todoRoutes from './routes/todoRoutes.js'
 import authMiddleware from './middleware/authMiddleware.js'
 
-const PORT = process.env.PORT || 5000
 const app = express()
+const PORT = process.env.PORT || 5003
 
+// Get the file path from the URL of the current module
 const __filename = fileURLToPath(import.meta.url)
+// Get the directory name from the file path
 const __dirname = dirname(__filename)
-const publicPath = path.join(__dirname, '../public') // Giả sử server.js nằm trong src/
 
-// Middlewares
+// Middleware
 app.use(express.json())
-app.use(express.static(publicPath))
+// Serves the HTML file from the /public directory
+// Tells express to serve all files from the public folder as static assets / file. Any requests for the css files will be resolved to the public directory.
+app.use(express.static(path.join(__dirname, '../public')))
 
-// API Routes
-app.use('/api/auth', authRoutes)
-app.use('/api/todos', authMiddleware, todoRoutes)
-
-// Fallback / Home route
+// Serving up the HTML file from the /public directory
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'))
 })
 
-// Global Error Handler (Bắt buộc có trong production)
-app.use((err, req, res, next) => {
-    console.error(err.stack)
-    res.status(err.status || 500).json({
-        message: err.message || 'Internal Server Error'
-    })
-})
+// Routes
+app.use('/auth', authRoutes)
+app.use('/todos', authMiddleware, todoRoutes)
 
 app.listen(PORT, () => {
-    console.log(`Server is running at PORT: ${PORT}`)
+    console.log(`Server has started on port: ${PORT}`)
 })
