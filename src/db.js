@@ -2,21 +2,21 @@ import { DatabaseSync } from 'node:sqlite'
 const db = new DatabaseSync(':memory:')
 
 db.exec(`
-    CREATE TABLE users(
+    CREATE TABLE users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username VARCHAR(255) UNIQUE,
+        username TEXT UNIQUE,
         password TEXT
     )
 `)
 
 db.exec(`
-    CREATE TABLE todos(
+    CREATE TABLE todos (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER,
         task TEXT,
-        status BOOLEAN DEFAULT 0,
+        completed BOOLEAN DEFAULT 0,
         FOREIGN KEY(user_id) REFERENCES users(id)
-    )
+    )    
 `)
 
 export default db
