@@ -24,11 +24,25 @@ router.post('/', (req, res) => {
 })
 
 //cập nhật todo
-//Phức tạp hơn vì cần truy cập cụ thể vùng cần updata
-router.put('/', (req, res) => {
+//Phức tạp hơn vì cần truy cập cụ thể vùng cần update
+router.put('/:id', (req, res) => {
+    const { id } = req.params
+    const { completed } = req.body
+
+    const updateTask = db.prepare(`UPDATE todos SET completed = ? WHERE id = ?`)
+    const result = updateTask.run(completed, id)
+
+    res.json({ status: "complete" })
 })
 
 //xoá todo
-router.delete('/:id', (req, res) => { })
+router.delete('/:id', (req, res) => {
+    const { id } = req.params
+
+    const deleteTask = db.prepare(`DELETE FROM todos WHERE id = ? AND user_id = ?`)
+    const result = deleteTask.run(id, req.userId)
+
+    res.json({ message: "complete" })
+})
 
 export default router

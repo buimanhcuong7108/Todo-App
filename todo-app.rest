@@ -21,12 +21,21 @@ Content-Type: application/json
 
 ### GET TASK
 GET http://localhost:8080/todos
-Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzk0NTYwNjg4LCJleHAiOjE3OTQ2NDcwODh9.wy3xF04k1FEM4UlHAnqO36vAnhYOXJD1I0kDvySevzk
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzk0NTYyNjQwLCJleHAiOjE3OTQ2NDkwNDB9.i48bakLqmANfZc0ZK-SETFH-D8vc3bM5e9r6U2tJzg4
 ### CREATE TODO
 POST  http://localhost:8080/todos
-Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzk0NTYwNjg4LCJleHAiOjE3OTQ2NDcwODh9.wy3xF04k1FEM4UlHAnqO36vAnhYOXJD1I0kDvySevzk
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzk0NTYyNjQwLCJleHAiOjE3OTQ2NDkwNDB9.i48bakLqmANfZc0ZK-SETFH-D8vc3bM5e9r6U2tJzg4
 Content-Type: application/json
 
 {
     "task": "New task"
+}
+
+### UPDATE TODO
+PUT http://localhost:8080/todos/1
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzk0NTYyNjQwLCJleHAiOjE3OTQ2NDkwNDB9.i48bakLqmANfZc0ZK-SETFH-D8vc3bM5e9r6U2tJzg4
+Content-Type: application/json
+
+{
+    "completed": 0
 }
