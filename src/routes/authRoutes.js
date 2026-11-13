@@ -11,9 +11,9 @@ router.post('/register', (req, res) => {
     const { username, password } = req.body;
 
     //encrypt password
-    const hashedPassword = bcrypt.hashSync(password, SALT_NUM)
 
     try {
+        const hashedPassword = bcrypt.hashSync(password, SALT_NUM)
         //tạo user mới
         const insertUser = db.prepare(`
             INSERT INTO users (username, password)
@@ -39,7 +39,7 @@ router.post('/register', (req, res) => {
         )
 
         //RESPONSE
-        res.status(201).json({ token })
+        res.json({ token })
     } catch (err) {
         //RESPONSE
         console.log(err.message)
@@ -55,13 +55,19 @@ router.post('/login', (req, res) => {
         const getUser = db.prepare('SELECT * FROM users WHERE username = ?')
 
         const currUser = getUser.get(username)
-        const passwordValid = bcrypt.compareSync(password, currUser.password)
 
         //xử lý lỗi login
         if (!currUser) {
-            return res.status(404).send({ message: "User not found!" })
-        } else if (!passwordValid) {
-            return res.status(404).send(`Wrong password!`)
+            return res.status(401).json({
+                message: "Invalid username or password"
+            });
+        }
+
+        const passwordValid = bcrypt.compareSync(password, currUser.password)
+        if (!passwordValid) {
+            return res.status(401).json({
+                message: "Invalid username or password"
+            });
         }
 
         //tạo token login
@@ -73,7 +79,7 @@ router.post('/login', (req, res) => {
 
         //RESPONSE
         console.log(currUser)
-        res.status(200).json({ token })
+        res.json({ token })
     } catch (err) {
         console.log(err.message)
         res.sendStatus(401)
