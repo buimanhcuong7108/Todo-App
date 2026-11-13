@@ -16,5 +16,17 @@ Content-Type: application/json
 
 {
     "username": "bomdeptrai0701@gmail.com",
-    "password": "00021210"
+    "password": "0000"
+}
+
+### GET TASK
+GET http://localhost:8080/todos
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzk0NTYwNjg4LCJleHAiOjE3OTQ2NDcwODh9.wy3xF04k1FEM4UlHAnqO36vAnhYOXJD1I0kDvySevzk
+### CREATE TODO
+POST  http://localhost:8080/todos
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzk0NTYwNjg4LCJleHAiOjE3OTQ2NDcwODh9.wy3xF04k1FEM4UlHAnqO36vAnhYOXJD1I0kDvySevzk
+Content-Type: application/json
+
+{
+    "task": "New task"
 }

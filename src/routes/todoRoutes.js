@@ -11,24 +11,21 @@ router.get('/', (req, res) => {
         WHERE user_id = ?
     `)
 
-    const tasks = getTask.all(req.userId)
-    res.json(tasks)
+    const result = getTask.all(req.userId)
+    res.json(result)
 })
 
 //Tạo todo mới
 router.post('/', (req, res) => {
-    const newTask = db.prepare(`
-        INSERT INTO todos (user id, task)
-        VALUES (?, ?)
-    `)
-
-    newTask.run(req.userId, req.task)
+    const { task } = req.body
+    const insertTask = db.prepare(`INSERT INTO todos (user_id, task) VALUES (?, ?)`)
+    const result = insertTask.run(req.userId, task)
+    res.json({ id: result.lastInsertRowid, task, status: 0 })
 })
 
 //cập nhật todo
 //Phức tạp hơn vì cần truy cập cụ thể vùng cần updata
 router.put('/', (req, res) => {
-
 })
 
 //xoá todo

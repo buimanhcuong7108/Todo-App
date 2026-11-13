@@ -18,7 +18,7 @@ router.post('/register', (req, res) => {
             VALUES (?, ?)
         `)
 
-        const currUser = insertUser.run(username, hashedPassword)
+        const result = insertUser.run(username, hashedPassword)
 
         //tạo default task
         const insertTask = db.prepare(`
@@ -27,10 +27,10 @@ router.post('/register', (req, res) => {
         `)
 
         const defaultTask = `Create your first todo!`
-        insertTask.run(currUser.lastInsertRowid, defaultTask)
+        insertTask.run(result.lastInsertRowid, defaultTask)
 
         //tạo token để mỗi user đều có một phân vùng quyền lợi riêng
-        const token = jwt.sign({ id: currUser.lastInsertRowid }, process.env.JWT_SECRET, { expiresIn: '24h' })
+        const token = jwt.sign({ id: result.lastInsertRowid }, process.env.JWT_SECRET, { expiresIn: '24h' })
 
         //RESPONSE
         res.json({ token })
@@ -47,15 +47,15 @@ router.post('/login', (req, res) => {
     //encrypt password
     try {
         const getUser = db.prepare('SELECT * FROM users WHERE username = ?')
-        const currUser = getUser.get(username)
+        const result = getUser.get(username)
 
         //xử lý lỗi login
-        if (!currUser) { return res.status(401).json({ message: "Invalid username or password" }); }
-        const passwordValid = bcrypt.compareSync(password, currUser.password)
+        if (!result) { return res.status(401).json({ message: "Invalid username or password" }); }
+        const passwordValid = bcrypt.compareSync(password, result.password)
         if (!passwordValid) { return res.status(401).json({ message: "Invalid username or password" }); }
 
         //tạo token login
-        const token = jwt.sign({ id: currUser.id }, process.env.JWT_SECRET, { expiresIn: '24h' })
+        const token = jwt.sign({ id: result.id }, process.env.JWT_SECRET, { expiresIn: '24h' })
 
         //RESPONSE
         res.json({ token })
